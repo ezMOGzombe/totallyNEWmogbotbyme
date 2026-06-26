@@ -1,0 +1,35 @@
+{
+    "users": [
+        {
+            "id": 1178284542,
+            "granted": 501,
+            "used_today": 1,
+            "last_reset": "2026-06-25",
+            "expires_at": null
+        },
+        {
+            "id": 2084764111,
+            "granted": 2,
+            "used_today": 1,
+            "last_reset": "2026-06-25",
+            "expires_at": null
+        },
+        {
+            "id": 1660381110,
+            "granted": 15,
+            "used_today": 0,
+            "last_reset": "2026-06-25",
+            "expires_at": "2026-06-28"
+        },
+        {
+            "id": 7526304127,
+            "granted": 2,
+            "used_today": 0,
+            "last_reset": "2026-06-25",
+            "expires_at": null
+        }
+    ],
+    "settings": {
+        "strictness_pct": 0.0
+    }
+}
