@@ -265,17 +265,18 @@ class WhitelistMiddleware(BaseMiddleware):
         if user is None:
             return None
         if not is_allowed(user.id):
-    if isinstance(event, Message):
-        await event.answer(
-            "🔒 У вас нет доступа к боту.\n\n"
-            "Для получения доступа оформите подписку."
-        )
-    elif isinstance(event, CallbackQuery):
-        await event.answer(
-            "🔒 Нет доступа. Оформите подписку.",
-            show_alert=True,
-        )
-    return None
+            if isinstance(event, Message):
+                await event.answer(
+                    "🔒 У вас нет доступа к боту.\n\n"
+                    "Для получения доступа оформите подписку."
+                )
+            elif isinstance(event, CallbackQuery):
+                await event.answer(
+                    "🔒 Нет доступа. Оформите подписку.",
+                    show_alert=True,
+                )
+            return None
+        return await handler(event, data)
 
 
 # ---------------------------------------------------------------------------
