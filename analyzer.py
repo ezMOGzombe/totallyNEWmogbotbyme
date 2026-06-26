@@ -150,7 +150,7 @@ class FaceAnalysisResult:
 
     advice_soft: list = field(default_factory=list)
     advice_hard: list = field(default_factory=list)
-
+    strengths: list = field(default_factory=list)  # ← сильные стороны
 
 # ---------------------------------------------------------------------------
 # Шкала тиров
@@ -337,6 +337,7 @@ def analyze_face(front_image_path: str, profile_image_path: str) -> FaceAnalysis
 
     result.tier = score_to_tier(result.psl_score)
     result.advice_soft, result.advice_hard = _generate_advice(result)
+    result.strengths = _generate_strengths(result)  # ← добавить
     result.success = True
     return result
 
@@ -417,7 +418,25 @@ def get_e_line_points(profile_pts: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 # ---------------------------------------------------------------------------
 # Советы softmaxxing / hardmaxxing
 # ---------------------------------------------------------------------------
-def _generate_advice(r: FaceAnalysisResult) -> tuple[list, list]:
+def _generate_strengths(r: FaceAnalysisResult) -> list:
+    strengths = []
+    if r.symmetry_score >= 80:
+        strengths.append(f"Высокая симметрия лица ({r.symmetry_score:.0f}%) — один из главных маркеров привлекательности.")
+    if r.fwhr_score >= 75:
+        strengths.append(f"Хороший FWHR ({r.fwhr:.2f}) — пропорциональная ширина скул относительно высоты лица.")
+    if r.lower_third_score >= 75:
+        strengths.append(f"Гармоничная нижняя треть лица ({r.lower_third_ratio:.2f}) — сбалансированные пропорции губ и подбородка.")
+    if r.ipd_score >= 75:
+        strengths.append(f"Оптимальное расстояние между глазами ({r.ipd_ratio:.2f}) — близко к идеалу 0.45.")
+    if r.skin_score >= 80:
+        strengths.append(f"Хорошее состояние кожи ({r.skin_score:.0f}%) — ровная текстура, минимум неровностей.")
+    if r.bone_score >= 75:
+        strengths.append(f"Выраженная костная структура ({r.bone_score:.0f}%) — чёткая челюсть и скулы.")
+    if r.harmony_score >= 75:
+        strengths.append(f"Высокая гармония черт ({r.harmony_score:.0f}%) — пропорции близки к золотому сечению.")
+    if not strengths:
+        strengths.append("Все метрики в зоне роста — следуй советам ниже для улучшения результата.")
+    return strengths_generate_advice(r: FaceAnalysisResult) -> tuple[list, list]:
     soft, hard = [], []
 
     if r.skin_score < 75:
