@@ -1,6 +1,7 @@
 aiogram==3.4.1
+python==3.11
 opencv-python==4.9.0.80
-mediapipe==0.10.30
+mediapipe==0.10.9
 Pillow==10.2.0
 numpy==1.26.4
 python-dotenv==1.0.1
