@@ -265,9 +265,17 @@ class WhitelistMiddleware(BaseMiddleware):
         if user is None:
             return None
         if not is_allowed(user.id):
-            # Полностью игнорируем — никакого ответа.
-            return None
-        return await handler(event, data)
+    if isinstance(event, Message):
+        await event.answer(
+            "🔒 У вас нет доступа к боту.\n\n"
+            "Для получения доступа оформите подписку."
+        )
+    elif isinstance(event, CallbackQuery):
+        await event.answer(
+            "🔒 Нет доступа. Оформите подписку.",
+            show_alert=True,
+        )
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -369,7 +377,11 @@ WELCOME_TEXT = (
     "/me — доступные запросы"
 )
 
-ADMIN_RIGHTS_TEXT = "Вы имеете права администратора."
+ADMIN_RIGHTS_TEXT = (
+    "Вы имеете права администратора.\n\n"
+    "/settings — настройка строгости\n"
+    "/admin — панель управления"
+)
 
 
 # ---------------------------------------------------------------------------
