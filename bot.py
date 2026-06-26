@@ -783,6 +783,7 @@ async def psl_profile_invalid(message: Message) -> None:
 def _build_report_text(r: FaceAnalysisResult) -> str:
     soft = "\n".join(f"• {tip}" for tip in r.advice_soft)
     hard = "\n".join(f"• {tip}" for tip in r.advice_hard)
+    strengths = "\n".join(f"• {s}" for s in r.strengths)  # ← добавить
 
     tilt_note = ""
     if r.tilt_detected:
@@ -801,6 +802,7 @@ def _build_report_text(r: FaceAnalysisResult) -> str:
         f"• Структура костей: {r.bone_score:.0f}%\n"
         f"• Состояние кожи: {r.skin_score:.0f}%\n"
         f"• Гармония черт: {r.harmony_score:.0f}%\n\n"
+        f"<b>✅ Сильные стороны:</b>\n{strengths}\n\n"
         f"<b>🧴 Softmaxxing:</b>\n{soft}\n\n"
         f"<b>🛠 Hardmaxxing:</b>\n{hard}"
     )
